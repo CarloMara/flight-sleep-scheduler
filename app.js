@@ -326,6 +326,7 @@
           timezone: timeZone,
           start_date: startYmd,
           end_date: endYmd,
+          timeformat: "unixtime",
         });
       const res = await fetch(url);
       if (!res.ok) throw new Error("sun lookup failed");
@@ -335,11 +336,11 @@
       for (let i = 0; i < times.length; i++) {
         const rise = data.daily.sunrise?.[i];
         const set = data.daily.sunset?.[i];
-        if (!rise || !set) continue;
+        if (rise == null || set == null) continue;
         days.push({
           date: times[i],
-          sunrise: new Date(rise),
-          sunset: new Date(set),
+          sunrise: new Date(Number(rise) * 1000),
+          sunset: new Date(Number(set) * 1000),
         });
       }
       if (days.length) return days;
