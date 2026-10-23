@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -20,8 +20,8 @@
         <div class="picked" id="dep-picked">—</div>
         <label class="sr-only" for="dep-date">Departure date</label>
         <input id="dep-date" type="date" />
-        <label class="sr-only" for="dep-time">Departure local time</label>
-        <input id="dep-time" type="time" value="22:00" />
+        <label class="sr-only" for="dep-time">Departure local time (24h)</label>
+        <input id="dep-time" class="time-24" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="HH:MM" maxlength="5" value="22:00" />
         <div class="local-readout" id="dep-local"></div>
       </div>
 
@@ -33,8 +33,8 @@
         <div class="picked" id="arr-picked">—</div>
         <label class="sr-only" for="arr-date">Arrival date</label>
         <input id="arr-date" type="date" />
-        <label class="sr-only" for="arr-time">Arrival local time</label>
-        <input id="arr-time" type="time" value="10:00" />
+        <label class="sr-only" for="arr-time">Arrival local time (24h)</label>
+        <input id="arr-time" class="time-24" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="HH:MM" maxlength="5" value="10:00" />
         <div class="local-readout" id="arr-local"></div>
         <div class="day-offset" id="day-offset" hidden></div>
       </div>

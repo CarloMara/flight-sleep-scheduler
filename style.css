@@ -75,7 +75,7 @@ h1 {
 
 input[type="text"],
 input[type="date"],
-input[type="time"] {
+input.time-24 {
   width: 100%;
   margin: 0 0 0.4rem;
   padding: 0.45rem 0.5rem;
@@ -273,7 +273,7 @@ footer a {
 
   input[type="text"],
   input[type="date"],
-  input[type="time"] {
+  input.time-24 {
     font-size: 0.78rem;
     padding: 0.4rem;
   }

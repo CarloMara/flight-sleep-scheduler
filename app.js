@@ -37,6 +37,24 @@
     return String(n).padStart(2, "0");
   }
 
+  function normalizeTime24(raw) {
+    const s = String(raw || "").trim();
+    let m = s.match(/^(\d{1,2}):(\d{2})$/);
+    if (!m) m = s.match(/^(\d{2})(\d{2})$/);
+    if (!m) return null;
+    const hh = Number(m[1]);
+    const mm = Number(m[2]);
+    if (hh > 23 || mm > 59) return null;
+    return `${pad(hh)}:${pad(mm)}`;
+  }
+
+  function bindTime24(input) {
+    input.addEventListener("blur", () => {
+      const n = normalizeTime24(input.value);
+      if (n) input.value = n;
+    });
+  }
+
   function todayISOInTZ(timeZone) {
     const parts = Object.fromEntries(
       new Intl.DateTimeFormat("en-CA", {
@@ -421,15 +439,18 @@
     const arr = state.arr;
     const depDate = els.depDate.value;
     const arrDate = els.arrDate.value;
-    const depTime = els.depTime.value;
-    const arrTime = els.arrTime.value;
+    const depTime = normalizeTime24(els.depTime.value);
+    const arrTime = normalizeTime24(els.arrTime.value);
 
     if (!dep || !arr || !depDate || !arrDate || !depTime || !arrTime) {
       els.result.hidden = true;
       els.dayOffset.hidden = true;
       els.depLocal.textContent = "";
       els.arrLocal.textContent = "";
-      els.status.textContent = "select airports and times";
+      els.status.textContent =
+        !depTime || !arrTime
+          ? "use 24h times like 22:00"
+          : "select airports and times";
       return;
     }
 
@@ -489,6 +510,8 @@
   function wire() {
     bindSuggest(els.depQ, els.depSuggest, "dep");
     bindSuggest(els.arrQ, els.arrSuggest, "arr");
+    bindTime24(els.depTime);
+    bindTime24(els.arrTime);
     for (const el of [els.depDate, els.arrDate, els.depTime, els.arrTime]) {
       el.addEventListener("change", scheduleRender);
       el.addEventListener("input", scheduleRender);
@@ -510,14 +533,16 @@
   /** If arrive local is still before depart in absolute time, step arrival date forward. */
   function maybeBumpArrivalDay() {
     if (!state.dep || !state.arr) return;
-    if (!els.depDate.value || !els.arrDate.value || !els.depTime.value || !els.arrTime.value) {
+    const depTime = normalizeTime24(els.depTime.value);
+    const arrTime = normalizeTime24(els.arrTime.value);
+    if (!els.depDate.value || !els.arrDate.value || !depTime || !arrTime) {
       return;
     }
     try {
       let guard = 0;
       while (guard < 3) {
-        const depUtc = zonedTimeToUtc(els.depDate.value, els.depTime.value, state.dep.tz);
-        const arrUtc = zonedTimeToUtc(els.arrDate.value, els.arrTime.value, state.arr.tz);
+        const depUtc = zonedTimeToUtc(els.depDate.value, depTime, state.dep.tz);
+        const arrUtc = zonedTimeToUtc(els.arrDate.value, arrTime, state.arr.tz);
         if (arrUtc > depUtc) break;
         els.arrDate.value = addDaysYmd(els.arrDate.value, 1);
         guard += 1;
