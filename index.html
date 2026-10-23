@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>flight sleep</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main>
+    <h1>flight sleep</h1>
+    <p class="sub">pick when to sleep so you land on destination night</p>
+
+    <section class="legs" aria-label="Flight endpoints">
+      <div class="leg" data-side="dep">
+        <div class="leg-label">depart</div>
+        <label class="sr-only" for="dep-q">Departure airport</label>
+        <input id="dep-q" class="airport-q" type="text" autocomplete="off" spellcheck="false" placeholder="JFK / New York" />
+        <ul class="suggest" id="dep-suggest" hidden></ul>
+        <div class="picked" id="dep-picked">—</div>
+        <label class="sr-only" for="dep-date">Departure date</label>
+        <input id="dep-date" type="date" />
+        <label class="sr-only" for="dep-time">Departure local time</label>
+        <input id="dep-time" type="time" value="22:00" />
+        <div class="local-readout" id="dep-local"></div>
+      </div>
+
+      <div class="leg" data-side="arr">
+        <div class="leg-label">arrive</div>
+        <label class="sr-only" for="arr-q">Arrival airport</label>
+        <input id="arr-q" class="airport-q" type="text" autocomplete="off" spellcheck="false" placeholder="LHR / London" />
+        <ul class="suggest" id="arr-suggest" hidden></ul>
+        <div class="picked" id="arr-picked">—</div>
+        <label class="sr-only" for="arr-date">Arrival date</label>
+        <input id="arr-date" type="date" />
+        <label class="sr-only" for="arr-time">Arrival local time</label>
+        <input id="arr-time" type="time" value="10:00" />
+        <div class="local-readout" id="arr-local"></div>
+        <div class="day-offset" id="day-offset" hidden></div>
+      </div>
+    </section>
+
+    <section class="result" id="result" hidden>
+      <div class="meta" id="meta"></div>
+
+      <div class="timelines" aria-label="Day and night during flight">
+        <div class="row">
+          <div class="row-head" id="dep-row-head">DEP</div>
+          <div class="bar" id="dep-bar"></div>
+          <div class="ticks" id="dep-ticks"></div>
+        </div>
+        <div class="row">
+          <div class="row-head" id="arr-row-head">ARR</div>
+          <div class="bar" id="arr-bar"></div>
+          <div class="ticks" id="arr-ticks"></div>
+        </div>
+      </div>
+
+      <div class="legend">
+        <span><i class="swatch day"></i> day</span>
+        <span><i class="swatch night"></i> night</span>
+      </div>
+      <p class="hint">sleep while destination is night if you want to land synced</p>
+    </section>
+
+    <p class="status" id="status" role="status"></p>
+  </main>
+
+  <footer>
+    airports: <a href="https://github.com/mwgg/Airports">mwgg/Airports</a>
+    · sun: <a href="https://open-meteo.com/">Open-Meteo</a>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
